@@ -117,4 +117,6 @@ public class MemberRecord {
     public void payBill(double amount){
         System.out.println( name + "İsimli kayıt için " + amount + "ödendi.");
     }
+
+
 }

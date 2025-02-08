@@ -39,6 +39,7 @@ public class Reader extends Person{
     public boolean barrowBook(Book book){
         if(barrowedBooks.size() < maxBookLimit){
             barrowedBooks.add(book);
+            System.out.println(book.getName() + " adlı kitabı ödünç aldınız.");
             return true;
         }else{
             System.out.println("Kitap limitine ulaştını!");

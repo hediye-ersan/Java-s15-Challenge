@@ -23,15 +23,24 @@ public class Main {
         Book book1 = new Book("Harry Potter", author1.getName());
         Book book2 = new Book("1984", author1.getName());
         Book book3 = new Book("Animal Farm", author2.getName());
+        Book book4 = new Book("Anna Karanina1", author2.getName());
+        Book book5 = new Book("Anna Karanina2", author2.getName());
+        Book book6 = new Book("Harry Potter2", author1.getName());
 
         author1.newBook(book1);
-        author2.newBook(book2);
+        author1.newBook(book2);
         author2.newBook(book3);
+        author2.newBook(book4);
+        author2.newBook(book5);
+        author1.newBook(book6);
 
         // Kütüphaneye kitapları ekler
         library.newBook(book1);
         library.newBook(book2);
         library.newBook(book3);
+        library.newBook(book4);
+        library.newBook(book5);
+        library.newBook(book6);
 
         // Kütüphaneci oluşturur
         Librarian librarian = new Librarian("Ahmet", "1234");
@@ -80,8 +89,12 @@ public class Main {
             System.out.println("1. Kitap Ara");
             System.out.println("2. Kitap Ödünç Ver");
             System.out.println("3. Kitap İade Al");
-            System.out.println("4. Ana Menüye Dön");
-            System.out.print("Seçiminizi yapın: ");
+            System.out.println("4. Yeni Kitap Ekle");
+            System.out.println("5. Kitap Bilgilerini Güncelle");
+            System.out.println("6. Kitap Sil");
+            System.out.println("7. Yazarın Tüm Kitaplarını Listele");
+            System.out.println("8. Ana Menüye Dön");
+            System.out.print("Seçiminiz: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -135,9 +148,47 @@ public class Main {
                     librarian.returnBook(library, returnReader, returnBook); // Okuyucu nesnesini kullanın.
                     break;
                 case 4:
+                    System.out.print("Yeni kitabın adını girin: ");
+                    String newBookName = scanner.nextLine();
+                    System.out.print("Yazarın adını girin: ");
+                    String author = scanner.nextLine();
+                    library.newBook(new Book(newBookName, author));
+                    System.out.println("Kitap başarıyla eklendi!");
+                    break;
+                case 5: // Kitap Güncelle
+                    System.out.print("Güncellenecek kitabın ID'sini girin: ");
+                    int updateBookId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.print("Yeni Kitap Adı: ");
+                    String updateBookName = scanner.nextLine();
+
+                    System.out.print("Yeni Yazar: ");
+                    String newBookAuthor = scanner.nextLine();
+
+                    System.out.print("Yeni Fiyat: ");
+                    double newBookPrice = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    System.out.print("Yeni Edisyon: ");
+                    String newBookEdition = scanner.nextLine();
+
+                    librarian.updateBook(library, updateBookId, updateBookName, newBookAuthor, newBookPrice, newBookEdition);
+                    break;
+                case 6: // Kitap Sil
+                    System.out.print("Silinecek kitabın ID'sini girin: ");
+                    int deleteBookId = scanner.nextInt();
+                    librarian.removeBook(library, deleteBookId);
+                    break;
+                case 7:
+                    System.out.print("Yazarın adını girin: ");
+                    String authorName = scanner.nextLine();
+                    librarian.listBooksByAuthor(library, authorName);
+                    break;
+                case 8:
                     return;
                 default:
-                    System.out.println("Geçersiz seçim. Tekrar deneyin.");
+                    System.out.println("Geçersiz seçim!");
             }
         }
     }
@@ -146,8 +197,10 @@ public class Main {
             System.out.println("\nOkuyucu Menüsü");
             System.out.println("1. Ödünç Aldığım Kitapları Göster");
             System.out.println("2. Satın Aldığım Kitapları Göster");
-            System.out.println("3. Ana Menüye Dön");
-            System.out.print("Seçiminizi yapın: ");
+            System.out.println("3. Kitap Ödünç Al");
+            System.out.println("4. Kitap İade Et");
+            System.out.println("5. Ana Menüye Dön");
+            System.out.print("Seçiminiz: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -159,9 +212,29 @@ public class Main {
                     reader.showPurchasedBook();
                     break;
                 case 3:
+                    System.out.print("Ödünç almak istediğiniz kitabın adını girin: ");
+                    String borrowBookName = scanner.nextLine();
+                    Book bookToBorrow = library.findBook(borrowBookName); // Kitap nesnesini bul
+                    if (bookToBorrow != null) { // Kitap bulunduysa
+                        reader.barrowBook(bookToBorrow); // Kitap nesnesini metoda geçir
+                    } else {
+                        System.out.println("Kitap bulunamadı!");
+                    }
+                    break;
+                case 4:
+                    System.out.print("İade edilecek kitabın adını girin: ");
+                    String returnBookName = scanner.nextLine();
+                    Book bookToReturn = library.findBook(returnBookName); // Kitap nesnesini bul
+                    if (bookToReturn != null) { // Kitap bulunduysa
+                        reader.returnBook(bookToReturn); // Kitap nesnesini metoda geçir
+                    } else {
+                        System.out.println("Kitap bulunamadı!");
+                    }
+                    break;
+                case 5:
                     return;
                 default:
-                    System.out.println("Geçersiz seçim. Tekrar deneyin.");
+                    System.out.println("Geçersiz seçim!");
             }
         }
     }

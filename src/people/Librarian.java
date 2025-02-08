@@ -87,6 +87,63 @@ public class Librarian extends Person{
         library.takeBackBook(reader, book);
     }
 
+    public void updateBook(Library library, int bookId, String newName, String newAuthor, double newPrice, String newEdition) {
+        Book bookToUpdate = null;
+        for (Book book : library.getBooks()) {
+            if (book.getId() == bookId) {
+                bookToUpdate = book;
+                break;
+            }
+        }
+
+        if (bookToUpdate != null) {
+            bookToUpdate.setName(newName);
+            bookToUpdate.setAuthor(newAuthor);
+            bookToUpdate.setPrice(newPrice);
+            bookToUpdate.setEdition(newEdition);
+            System.out.println("Kitap bilgileri güncellendi.");
+        } else {
+            System.out.println("Kitap bulunamadı!");
+        }
+    }
+
+    public void removeBook(Library library, int bookId) {
+        Book bookToRemove = null;
+        for (Book book : library.getBooks()) {
+            if (book.getId() == bookId) {
+                bookToRemove = book;
+                break;
+            }
+        }
+
+        if (bookToRemove != null) {
+            library.getBooks().remove(bookToRemove);
+            System.out.println("Kitap silindi.");
+        } else {
+            System.out.println("Kitap bulunamadı!");
+        }
+    }
+
+    public void listBooksByAuthor(Library library, String authorName) {
+        List<Book> booksByAuthor = new ArrayList<>();
+        for (Book book : library.getBooks()) {
+            if (book.getAuthor().equalsIgnoreCase(authorName)) {
+                booksByAuthor.add(book);
+            }
+        }
+
+        if (!booksByAuthor.isEmpty()) {
+            System.out.println(authorName + " adlı yazarın kitapları:");
+            for (Book book : booksByAuthor) {
+                book.display();
+                System.out.println("---");
+            }
+        } else {
+            System.out.println(authorName + " adlı yazarın kitabı bulunamadı!");
+        }
+    }
+
+
     @Override
     public void whoYouAre() {
         System.out.println("Ben bir kütüphaneciym ve adım: " + getName());
